@@ -39,8 +39,7 @@ export default function CreateEntryPage() {
         setLoading(false);
         return;
       }
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE}/diaries`,
+      await axios.post(`${process.env.NEXT_PUBLIC_API_BASE}/diaries`,
         { title, content, mood, date},
         {
           headers: {

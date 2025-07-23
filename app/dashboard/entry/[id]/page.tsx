@@ -33,8 +33,7 @@ export default function EntryPage() {
     const fetchEntry = async () => {
       try {
         const token = localStorage.getItem("token")
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASE}/diaries/${id}`,
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE}/diaries/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
