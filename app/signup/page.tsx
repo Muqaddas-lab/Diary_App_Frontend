@@ -73,13 +73,18 @@ export default function SignUpPage() {
     }
 
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/users/register`, {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/users/register`, {
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+        // name: formData.name,
+        // email: formData.email,
+        // password: formData.password,
       });
-
-      const { token } = res.data;
+      const response =await res.json()
+      const { token } = response;
       localStorage.setItem("token", token);
       router.push("/dashboard");
     } catch (err: any) {
