@@ -73,7 +73,7 @@ export default function SignUpPage() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/users/register", {
+      const res = await axios.post("${process.env.NEXT_PUBLIC_API_BASE}/api/users/register", {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -290,7 +290,7 @@ export default function SignUpPage() {
 //     }
 
 //     try {
-//       const res = await axios.post("http://localhost:5000/api/users/register", {
+//       const res = await axios.post("${process.env.NEXT_PUBLIC_API_BASE}/api/users/register", {
 //         name: formData.name,
 //         email: formData.email,
 //         password: formData.password,

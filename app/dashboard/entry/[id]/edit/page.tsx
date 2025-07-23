@@ -40,7 +40,7 @@ export default function EditEntryPage({ params }: { params: Promise<{ id: string
         const token = localStorage.getItem("token")
         if (!token) throw new Error("No token found")
 
-        const res = await fetch(`http://localhost:5000/api/diaries/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -81,7 +81,7 @@ export default function EditEntryPage({ params }: { params: Promise<{ id: string
       const token = localStorage.getItem("token")
       if (!token) throw new Error("No token found")
 
-      const res = await fetch(`http://localhost:5000/api/diaries/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
