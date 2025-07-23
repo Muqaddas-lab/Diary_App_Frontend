@@ -233,7 +233,7 @@ export default function EntryPage() {
   const fetchEntry = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/diaries/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

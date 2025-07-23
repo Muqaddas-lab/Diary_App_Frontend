@@ -254,7 +254,7 @@ export default function DashboardPage() {
 
   const fetchEntries = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/diaries`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

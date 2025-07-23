@@ -170,7 +170,7 @@ export default function CreateEntryPage() {
       return;
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/diaries`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
