@@ -72,36 +72,6 @@ export default function EditEntryPage({ params }: { params: Promise<{ id: string
       [field]: value,
     }))
   }
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   setError("")
-  //   setSuccess("")
-  //   try {
-  //     const token = localStorage.getItem("token")
-  //     if (!token) throw new Error("No token found")
-
-  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries/${id}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(formData),
-  //     })
-
-  //     if (!res.ok) {
-  //       const errorData = await res.json()
-  //       throw new Error(errorData.message || "Failed to update entry")
-  //     }
-
-  //     setSuccess("Entry updated successfully.")
-  //     router.push(`/dashboard/entry/${id}`)
-  //   } catch (err: any) {
-  //     console.error("Submit Error:", err)
-  //     setError(err.message || "Error updating entry.")
-  //   }
-  // }
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   setError("")
