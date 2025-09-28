@@ -1,5 +1,3 @@
-
-
 // "use client"
 
 // import { useEffect, useState } from "react"
@@ -21,31 +19,41 @@
 //   const router = useRouter()
 
 //   useEffect(() => {
-//     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
+//   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
 
-//     if (!token) {
-//       router.replace("/login")
-//       return
-//     }
+//   if (!token) {
+//     router.replace("/login")
+//     return
+//   }
+  
+//   const fetchEntries = async () => {
+//     try {
+//       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries`, {
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           "Content-Type": "application/json",
+//         },
+//       })
 
-//     const fetchEntries = async () => {
-//       try {
-//         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE}/diaries`, {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         })
-//         setEntries(res.data.diaries || [])
-//       } catch (err: any) {
-//         setError("Failed to load entries.")
-//         console.error("API ERROR:", err.response?.data || err.message)
-//       } finally {
-//         setLoading(false)
+//       if (!response.ok) {
+//         const errorData = await response.json()
+//         throw new Error(errorData.message || "Failed to load entries.")
 //       }
-//     }
 
-//     fetchEntries()
-//   }, [router])
+//       const data = await response.json()
+//       setEntries(data.diaries || [])
+//     } catch (err: any) {
+//       setError("Failed to load entries.")
+//       console.error("API ERROR:", err.message)
+//     } finally {
+//       setLoading(false)
+//     }
+//   }
+
+//   fetchEntries()
+//  }, [router])
+
 
 //   const filteredEntries = entries.filter(
 //     (entry: any) =>
@@ -224,12 +232,16 @@
 
 
 
+
+
+
+
+
 "use client"
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -239,52 +251,51 @@ import { Calendar, Plus, Search, BookOpen, Edit, Trash2, LogOut } from "lucide-r
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [entries, setEntries] = useState([])
+  const [entries, setEntries] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const router = useRouter()
 
   useEffect(() => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
 
-  if (!token) {
-    router.replace("/login")
-    return
-  }
-
-  const fetchEntries = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || "Failed to load entries.")
-      }
-
-      const data = await response.json()
-      setEntries(data.diaries || [])
-    } catch (err: any) {
-      setError("Failed to load entries.")
-      console.error("API ERROR:", err.message)
-    } finally {
-      setLoading(false)
+    if (!token) {
+      router.replace("/login")
+      return
     }
-  }
 
-  fetchEntries()
-}, [router])
+    const fetchEntries = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diaries`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
 
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.message || "Failed to load entries.")
+        }
+
+        const data = await response.json()
+        setEntries(data.diaries || [])
+      } catch (err: any) {
+        setError(err.message || "Failed to load entries.")
+        console.error("API ERROR:", err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchEntries()
+  }, [router])
 
   const filteredEntries = entries.filter(
     (entry: any) =>
-      entry.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      entry.content.toLowerCase().includes(searchTerm.toLowerCase())
+      entry.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      entry.content?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const getMoodColor = (mood: string) => {
@@ -339,7 +350,7 @@ export default function DashboardPage() {
           </Button>
         </div>
 
-        {/* Dashboard Stats */}
+        {/* Stats */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -360,28 +371,6 @@ export default function DashboardPage() {
             <CardContent>
               <div className="text-2xl font-bold">{entries.length}</div>
               <p className="text-xs text-muted-foreground">Entries this month</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Writing Streak</CardTitle>
-              <div className="h-4 w-4 rounded-full bg-green-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">7 days</div>
-              <p className="text-xs text-muted-foreground">Keep it up!</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Favorite Mood</CardTitle>
-              <div className="h-4 w-4 text-yellow-500">😊</div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">Happy</div>
-              <p className="text-xs text-muted-foreground">Most common mood</p>
             </CardContent>
           </Card>
         </div>
@@ -421,7 +410,9 @@ export default function DashboardPage() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{entry.content}</p>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      {entry.content}
+                    </p>
                     <div className="flex items-center gap-2">
                       <Button variant="outline" size="sm" asChild>
                         <Link href={`/dashboard/entry/${entry._id}`}>
@@ -435,7 +426,11 @@ export default function DashboardPage() {
                           Edit
                         </Link>
                       </Button>
-                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700 bg-transparent">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-red-600 hover:text-red-700 bg-transparent"
+                      >
                         <Trash2 className="mr-1 h-3 w-3" />
                         Delete
                       </Button>

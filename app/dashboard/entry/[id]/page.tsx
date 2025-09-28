@@ -259,28 +259,50 @@ export default function EntryPage() {
   fetchEntry()
 }, [id])
 
-  const handleDelete = async () => {
+  // const handleDelete = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token")
+  //     const res = await axios.delete(
+  //       `${process.env.NEXT_PUBLIC_API_BASE}/diaries/${id}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     )
+
+  //     if (res.status === 200) {
+  //       router.push("/dashboard")
+  //     } else {
+  //       setDeleteError(res.data?.message || "Failed to delete entry.")
+  //     }
+  //   } catch (err: any) {
+  //     console.error("Failed to delete entry:", err)
+  //     setDeleteError(err?.response?.data?.message || "Error deleting entry")
+  //   }
+  // }
+const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token")
-      const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE}/diaries/${id}`,
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE}/api/diaries/${id}`,
         {
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       )
-
-      if (res.status === 200) {
-        router.push("/dashboard")
-      } else {
-        setDeleteError(res.data?.message || "Failed to delete entry.")
+      if (!response.ok) {
+        throw new Error("Failed to delete entry")
       }
+      router.push("/dashboard")
     } catch (err: any) {
-      console.error("Failed to delete entry:", err)
-      setDeleteError(err?.response?.data?.message || "Error deleting entry")
+      setDeleteError(err.message || "Error deleting entry")
     }
   }
+
+
 
   const getMoodColor = (mood: string) => {
     switch (mood?.toLowerCase()) {
